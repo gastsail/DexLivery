@@ -1,0 +1,378 @@
+"""
+The Url scalar type represents a Uniform Resource Locator, commonly used to identify a web resource such as a website or API endpoint.
+"""
+scalar Url
+
+"""
+The Int8 custom type represents a signed 8-bit integer, which is a numeric value that can range from -128 to 127.
+"""
+scalar Int8
+
+enum __DirectiveLocation {
+  QUERY
+
+  MUTATION
+
+  SUBSCRIPTION
+
+  FIELD
+
+  FRAGMENT_DEFINITION
+
+  FRAGMENT_SPREAD
+
+  INLINE_FRAGMENT
+
+  VARIABLE_DEFINITION
+
+  SCHEMA
+
+  SCALAR
+
+  OBJECT
+
+  FIELD_DEFINITION
+
+  ARGUMENT_DEFINITION
+
+  INTERFACE
+
+  UNION
+
+  ENUM
+
+  ENUM_VALUE
+
+  INPUT_OBJECT
+
+  INPUT_FIELD_DEFINITION
+}
+
+"""
+The UInt8 custom type represents a signed 8-bit integer, which is a numeric value that can range from 0 to 255
+"""
+scalar UInt8
+
+"""
+The Int scalar type represents a signed 32-bit numeric non-fractional value. Response formats that support a 32-bit integer or a number type should use that type to represent this scalar.
+"""
+scalar Int
+
+enum RelationType {
+  REFERENCES
+
+  EMBEDDED
+
+  BELONGS_TO
+}
+
+input ProductInput {
+  name: String!
+
+  description: String!
+
+  price: Float!
+
+  imageUrl: Url
+}
+
+"""
+The UInt128 custom type represents a signed 8-bit integer, which is a numeric value that can range from 0 to 2^128-1
+"""
+scalar UInt128
+
+type Mutation {
+  createProduct(product: ProductInput!): ProductMutationResult!
+
+  updateProduct(id: UUID!, fields: ProductUpdateInput!): ProductMutationResult!
+
+  createOrder(order: OrderInput!): OrderMutationResult!
+
+  updateOrder(id: UUID!, fields: OrderUpdateInput!): OrderMutationResult!
+
+  addProductToOrderInProductList(productId: UUID!, orderId: UUID!): ProductMutationResult!
+}
+
+type __Directive {
+  name: String!
+
+  description: String
+
+  locations: [__DirectiveLocation!]!
+
+  args: [__InputValue!]!
+
+  isRepeatable: Boolean!
+}
+
+type __InputValue {
+  name: String!
+
+  description: String
+
+  type: __Type!
+
+  defaultValue: String
+}
+
+"""
+The UInt64 custom type represents a signed 8-bit integer, which is a numeric value that can range from 0 to 2^64-1
+"""
+scalar UInt64
+
+"""
+The byte scalar type represents a single unit of digital information that typically consists of 8 bits. In GraphQL, the byte type can be used to represent any arbitrary byte value, ranging from 0 to 255 in decimal notation.
+"""
+scalar Byte
+
+"""
+The UInt256 custom type represents a signed 8-bit integer, which is a numeric value that can range from 0 to 2^256-1
+"""
+scalar UInt256
+
+"""
+The Int16 custom type represents a signed 8-bit integer, which is a numeric value that can range from -32,768 to 32,767.
+"""
+scalar Int16
+
+"""
+The Int256 custom type represents a signed 8-bit integer, which is a numeric value that can range from -2^255 to 2^255-1
+"""
+scalar Int256
+
+"""
+The Int64 custom type represents a signed 8-bit integer, which is a numeric value that can range from -2^63 to 2^63-1
+"""
+scalar Int64
+
+type ProductMutationResult {
+  product: Product!
+
+  txHash: String!
+}
+
+type ConfirmationResult {
+  confirmedBlocks: Int!
+
+  pendingConfirmationBlocks: Int!
+
+  status: ConfirmationStatus!
+}
+
+input ProductUpdateInput {
+  name: String
+
+  description: String
+
+  price: Float
+
+  imageUrl: Url
+}
+
+type __Type {
+  kind: __TypeKind!
+
+  name: String
+
+  description: String
+
+  fields(includeDeprecated: Boolean = false): [__Field!]
+
+  interfaces: [__Type!]
+
+  possibleTypes: [__Type!]
+
+  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+
+  inputFields: [__InputValue!]
+
+  ofType: __Type
+
+  specifiedByURL: String
+}
+
+"""
+The Date scalar type represents a date and time without timezone information and it is formatted using the format '%Y-%m-%dT%H:%M:%S'
+"""
+scalar Date
+
+"""
+The Boolean scalar type represents true or false. Response formats should use a built-in boolean type if supported; otherwise, they should use their representation of the integers 1 and 0.
+"""
+scalar Boolean
+
+type Order {
+  id: UUID!
+
+  productList: [Product!]
+
+  total: Float!
+}
+
+"""
+The UInt32 custom type represents a signed 8-bit integer, which is a numeric value that can range from 0 to 2^32-1
+"""
+scalar UInt32
+
+"""
+The Int128 custom type represents a signed 8-bit integer, which is a numeric value that can range from -2^127 to 2^127-1
+"""
+scalar Int128
+
+input OrderUpdateInput {
+  productList: [UUID!]
+
+  total: Float
+}
+
+"""
+The EVMAccountAddress scalar type represents an Ethereum Virtual Machine (EVM) account address, commonly used to identify a specific account on the Ethereum blockchain. It is a 20-byte hexadecimal address that is unique and immutable, and is used for sending and receiving Ethereum transactions.
+"""
+scalar EVMAccountAddress
+
+type __Schema {
+  description: String
+
+  types: [__Type!]!
+
+  queryType: __Type!
+
+  mutationType: __Type
+
+  subscriptionType: __Type
+
+  directives: [__Directive!]!
+}
+
+enum __TypeKind {
+  SCALAR
+
+  OBJECT
+
+  INTERFACE
+
+  UNION
+
+  ENUM
+
+  INPUT_OBJECT
+
+  LIST
+
+  NON_NULL
+}
+
+"""
+The ID scalar type represents a unique identifier, often used to refetch an object or as the key for a cache. The ID type is serialized in the same way as a String; however, it is not intended to be human-readable. While it is often numeric, it should always serialize as a String.
+"""
+scalar ID
+
+type Product {
+  id: UUID!
+
+  name: String!
+
+  description: String!
+
+  price: Float!
+
+  imageUrl: Url
+}
+
+type OrderMutationResult {
+  order: Order!
+
+  txHash: String!
+}
+
+"""
+The String scalar type represents textual data, represented as a sequence of Unicode code points. The String type is most often used by GraphQL to represent free-form human-readable text. How the String is encoded internally (for example UTF-8) is left to the service implementation. All response serialization formats must support a string representation (for example, JSON Unicode strings), and that representation must be used to serialize this type.
+"""
+scalar String
+
+"""
+The Float scalar type represents signed double-precision finite values as specified by IEEE 754. Response formats that support an appropriate double-precision number type should use that type to represent this scalar.
+"""
+scalar Float
+
+"""
+The UInt16 custom type represents a signed 8-bit integer, which is a numeric value that can range from 0 to 65,535
+"""
+scalar UInt16
+
+type __Field {
+  name: String!
+
+  description: String
+
+  args: [__InputValue!]!
+
+  type: __Type!
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+enum ConfirmationStatus {
+  FAILED
+
+  PENDING
+
+  PENDING_BLOCK_CONFIRMATIONS
+
+  CONFIRMED
+}
+
+"""
+The Int32 custom type represents a signed 8-bit integer, which is a numeric value that can range from -2^31 to 2^31-1
+"""
+scalar Int32
+
+type __EnumValue {
+  name: String!
+
+  description: String
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+The DateTime scalar type represents a date and time with timezone information and it is formatted using the format '%Y-%m-%dT%H:%M:%S%:z'
+"""
+scalar DateTime
+
+input OrderInput {
+  productList: [UUID!]
+
+  total: Float!
+}
+
+scalar UUID
+
+type Query {
+  isConfirmed(hash: String!, blocks: Int): ConfirmationResult!
+
+  productById(id: UUID!): Product
+
+  allProducts: [Product!]!
+
+  orderById(id: UUID!): Order
+
+  allOrders: [Order!]!
+}
+
+directive @belongsTo (type: String!) on OBJECT
+
+directive @relation (type: String!, via: String) on FIELD_DEFINITION
+
+directive @embedded on FIELD_DEFINITION
+
+#directive @belongsTo (via: String!) on FIELD_DEFINITION
+
+schema {
+  query: Query
+  mutation: Mutation
+}

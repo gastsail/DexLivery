@@ -1,15 +1,12 @@
 package com.example.dexlivery.screens
 
-import android.widget.Space
-import androidx.compose.foundation.Image
+import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,22 +14,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
+import com.apollographql.apollo3.ApolloClient
 import com.example.dexlivery.R
 import com.example.dexlivery.data.model.Product
 import com.example.dexlivery.domain.dummyProductList
-import com.example.dexlivery.presentation.MainScreenState
 import com.example.dexlivery.presentation.MainScreenViewmodel
+import com.example.dexlivery.GetAllOrdersQuery
+
+val apolloClient = ApolloClient.Builder()
+    .serverUrl("http://10.0.2.2:8080/grahpql")
+    .build()
 
 @Composable
 fun MainScreen(
@@ -43,27 +41,33 @@ fun MainScreen(
     val uistate = viewModel.uiState.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(modifier = modifier) {
-            when (uistate.value) {
-                is MainScreenState.Loading -> {
-                    item {
-                        Text(modifier = Modifier.align(Alignment.Center), text = "Loading Products...")
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                    }
-                }
-                is MainScreenState.MainScreenStateUi -> {
-                    val productList = (uistate.value as MainScreenState.MainScreenStateUi).mainScreenUiState?.productList
-                    productList?.let { safeList ->
-                        items(safeList) { product ->
-                            ProductRow(product = product)
-                        }
-                    }
-                }
-                is MainScreenState.Error -> {
 
-                }
-            }
+        LaunchedEffect(Unit) {
+            val response = apolloClient.query(GetAllOrdersQuery()).execute()
+            Log.d("GetAllOrdersQuery", "Success ${response.data}")
         }
+
+//        LazyColumn(modifier = modifier) {
+//            when (uistate.value) {
+//                is MainScreenState.Loading -> {
+//                    item {
+//                        Text(modifier = Modifier.align(Alignment.Center), text = "Loading Products...")
+//                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+//                    }
+//                }
+//                is MainScreenState.MainScreenStateUi -> {
+//                    val productList = (uistate.value as MainScreenState.MainScreenStateUi).mainScreenUiState?.productList
+//                    productList?.let { safeList ->
+//                        items(safeList) { product ->
+//                            ProductRow(product = product)
+//                        }
+//                    }
+//                }
+//                is MainScreenState.Error -> {
+//
+//                }
+//            }
+//        }
     }
 }
 

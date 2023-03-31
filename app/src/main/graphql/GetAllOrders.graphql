@@ -1,0 +1,13 @@
+query GetAllOrders {
+    allOrders {
+        id
+        productList {
+            id
+            name
+            description
+            price
+            imageUrl
+        }
+        total
+    }
+}

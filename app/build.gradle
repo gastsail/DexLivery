@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
-    id("com.apollographql.apollo3").version("3.7.5")
+    id 'com.apollographql.apollo3'
 }
 
 android {
@@ -50,8 +50,10 @@ android {
     }
     apollo {
         service("service") {
-            packageName.set("com.example.rocketreserver")
+            packageName.set("com.example.dexlivery")
         }
+        generateKotlinModels.set(true)
+        packageNamesFromFilePaths()
     }
 }
 
